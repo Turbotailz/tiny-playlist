@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'api_token',
     ];
 
     /**
@@ -35,5 +35,29 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'playlists' => 'array',
     ];
+
+    /**
+     * The attributes that should be appended to JSON responses
+     * 
+     * @var array
+     */
+    protected $appends = ['playlists'];
+
+    /**
+     * Get the user's playlist as an attribute
+     * 
+     * @return array
+     */
+    public function getPlaylistsAttribute() {
+        return $this->playlists()->get();
+    }
+
+    /**
+     * Get the user's playlists
+     */
+    public function playlists() {
+        return $this->hasMany('App\Playlist');
+    }
 }

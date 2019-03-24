@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:api')->get('/user', 'PlaylistController@getUserPlaylists');
+
+Route::middleware('auth:api')->get('/playlists', 'PlaylistController@showPlaylists');
+Route::middleware('auth:api')->get('/playlist/{playlist}', 'PlaylistController@getPlaylist');
+Route::middleware('auth:api')->post('/playlist', 'PlaylistController@createPlaylist');
+Route::middleware('auth:api')->put('/playlist/{playlist}', 'PlaylistController@updatePlaylist');
+Route::middleware('auth:api')->delete('/playlist/{playlist}', 'PlaylistController@deletePlaylist');

@@ -10,11 +10,13 @@
     <title>{{ config('app.name', 'Tiny Playlist') }}</title>
 
     <!-- Scripts -->
+    <script defer src="https://pro.fontawesome.com/releases/v5.8.1/js/light.js" integrity="sha384-avwGKnev1pyXYEbWxXSg9S4rpTsws+5vQpoj76SfcccEzOL162Ei8+z4a6AlaMeE" crossorigin="anonymous"></script>
+    <script defer src="https://pro.fontawesome.com/releases/v5.8.1/js/fontawesome.js" integrity="sha384-w6QYwIdCVqcYkHtaFutVu3VlDeu+pBFvlp7e0/tygMFwnWTl13KuVYfsp0ediPpA" crossorigin="anonymous"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:800" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
