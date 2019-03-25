@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Playlist;
+use App\Song;
 
 class PlaylistController extends Controller
 {
@@ -84,5 +85,25 @@ class PlaylistController extends Controller
         $playlist->delete();
 
         return response()->json(null, 204);
+    }
+
+    
+    /**
+     * Add a song to a playlist
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function addSongToPlaylist(Request $request, Playlist $playlist)
+    {
+        $existingSong = Song::find($request->mbid);
+        
+        if ($existingSong) {
+            $playlist->songs()->attach($existingSong->id);
+        } else {
+            $newSong = Song::create($request->all());
+            $playlist->songs()->attach($newSong->id);
+        }
+
+        return response()->json($playlist, 201);
     }
 }

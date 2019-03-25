@@ -11,12 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/playlist/{id}', function () {
-    return view('playlist');
-});
+Route::get('/{any}', function () {
+    return view('welcome');
+})->where('any', '.*');
