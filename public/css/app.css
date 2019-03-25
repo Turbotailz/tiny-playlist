@@ -10756,7 +10756,7 @@ body {
 }
 
 .card .form-control {
-  background: #C1C006;
+  background: rgba(255, 255, 255, 0.8);
   border-color: #9E9D05;
 }
 

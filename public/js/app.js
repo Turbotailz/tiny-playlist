@@ -1826,6 +1826,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     user: Object
@@ -1877,7 +1880,6 @@ __webpack_require__.r(__webpack_exports__);
     addSong: function addSong(song) {
       var _this3 = this;
 
-      console.log(this.playlist);
       axios.post('/api/playlist/' + this.playlist.id + '/song', {
         'api_token': this.user.token,
         name: song.name,
@@ -1890,6 +1892,19 @@ __webpack_require__.r(__webpack_exports__);
         'art_extralarge': song.image[3]['#text']
       }).then(function (res) {
         _this3.playlist = res.data;
+      }).catch(function (error) {
+        console.error(error);
+      });
+    },
+    deleteSong: function deleteSong(song) {
+      var _this4 = this;
+
+      axios.delete('/api/playlist/' + this.playlist.id + '/song/' + song.id, {
+        params: {
+          'api_token': this.user.token
+        }
+      }).then(function (res) {
+        _this4.playlist = res.data;
       }).catch(function (error) {
         console.error(error);
       });
@@ -6527,7 +6542,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "#playlist {\n  width: 64em;\n  display: flex;\n  height: 80vh;\n}\n#playlist .playlist-songs {\n  padding: 1em;\n  display: flex;\n  flex-direction: column;\n}\n#playlist .add-song {\n  background: rgba(0, 0, 0, 0.2);\n  border-radius: 4px;\n  padding: 1em;\n  display: flex;\n  flex-direction: column;\n}\n#playlist .add-song .form-group {\n  display: flex;\n}\n#playlist .add-song .form-group input {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n#playlist .add-song .form-group button {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n#playlist .song-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  flex: 1 1 auto;\n  overflow-y: auto;\n}\n#playlist .song-list li {\n  display: flex;\n  align-items: center;\n  margin-bottom: 1em;\n  cursor: pointer;\n}\n#playlist .song-list li:hover {\n  background: rgba(0, 0, 0, 0.2);\n}\n#playlist .song-list li img {\n  flex: 0 0 auto;\n  margin-right: 1em;\n}\n#playlist .song-list li .details {\n  display: flex;\n  flex-direction: column;\n}\n#playlist .song-list li .details span:last-child {\n  opacity: 0.66;\n}", ""]);
+exports.push([module.i, "#playlist {\n  width: 64em;\n  display: flex;\n  height: 80vh;\n}\n#playlist .playlist-songs {\n  padding: 1em;\n  display: flex;\n  flex-direction: column;\n}\n#playlist .playlist-songs h1 {\n  font-family: Nunito;\n  color: #F9F845;\n  font-weight: 800;\n}\n#playlist .playlist-songs .delete {\n  position: absolute;\n  right: 1em;\n  top: 50%;\n  -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n  opacity: 0;\n  color: #F9F845;\n}\n#playlist .playlist-songs li {\n  position: relative;\n}\n#playlist .playlist-songs li:hover .delete {\n  opacity: 1;\n}\n#playlist .add-song {\n  background: rgba(0, 0, 0, 0.2);\n  border-radius: 4px;\n  padding: 1em;\n  display: flex;\n  flex-direction: column;\n}\n#playlist .add-song .form-group {\n  display: flex;\n}\n#playlist .add-song .form-group input {\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0;\n}\n#playlist .add-song .form-group button {\n  border-top-left-radius: 0;\n  border-bottom-left-radius: 0;\n}\n#playlist .song-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  flex: 1 1 auto;\n  overflow-y: auto;\n}\n#playlist .song-list li {\n  display: flex;\n  align-items: center;\n  margin-bottom: 1em;\n  cursor: pointer;\n}\n#playlist .song-list li:hover {\n  background: rgba(0, 0, 0, 0.2);\n}\n#playlist .song-list li img {\n  flex: 0 0 auto;\n  margin-right: 1em;\n}\n#playlist .song-list li .details {\n  display: flex;\n  flex-direction: column;\n}\n#playlist .song-list li .details span:last-child {\n  opacity: 0.66;\n}", ""]);
 
 // exports
 
@@ -37874,8 +37889,8 @@ var render = function() {
       _c(
         "ul",
         { staticClass: "song-list" },
-        _vm._l(_vm.playlist.songs, function(song) {
-          return _c("li", { key: song.id }, [
+        _vm._l(_vm.playlist.songs, function(song, index) {
+          return _c("li", { key: index + "_" + song.id }, [
             _c("img", {
               attrs: {
                 src: song.art_medium,
@@ -37887,7 +37902,20 @@ var render = function() {
               _c("span", [_vm._v(_vm._s(song.name))]),
               _vm._v(" "),
               _c("span", [_vm._v(_vm._s(song.artist))])
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "delete",
+                on: {
+                  click: function($event) {
+                    return _vm.deleteSong(song)
+                  }
+                }
+              },
+              [_c("i", { staticClass: "fal fa-times-square" })]
+            )
           ])
         }),
         0
@@ -38035,6 +38063,7 @@ var render = function() {
                 staticClass: "delete",
                 on: {
                   click: function($event) {
+                    $event.stopPropagation()
                     return _vm.deletePlaylist(playlist)
                   }
                 }
