@@ -4,11 +4,14 @@
             <h1>{{ playlist.name }}</h1>
             <p>Song list</p>
             <ul class="song-list">
-                <li v-for="song in playlist.songs" :key="song.id">
+                <li v-for="(song, index) in playlist.songs" :key="index + '_' + song.id">
                     <img :src="song.art_medium" :alt="`${song.name} by ${song.artist}`">
                     <div class="details">
                         <span>{{ song.name }}</span>
                         <span>{{ song.artist }}</span>
+                    </div>
+                    <div class="delete" @click="deleteSong(song)">
+                        <i class="fal fa-times-square"></i>
                     </div>
                 </li>
             </ul>
@@ -90,7 +93,6 @@ export default {
         },
 
         addSong: function(song) {
-            console.log(this.playlist);
             axios.post('/api/playlist/' + this.playlist.id + '/song', {
                 'api_token': this.user.token,
                 name: song.name,
@@ -108,7 +110,21 @@ export default {
             .catch((error) => {
                 console.error(error);
             });
-        }
+        },
+
+        deleteSong: function(song) {
+            axios.delete('/api/playlist/' + this.playlist.id + '/song/' + song.id, {
+                params: {
+                    'api_token': this.user.token,
+                }
+            })
+            .then((res) => {
+                this.playlist = res.data;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        },
 
         // createPlaylist: function() {
         //     axios.post('/api/playlist', {
@@ -168,6 +184,30 @@ $secondary4: #408DA8;
         padding: 1em;
         display: flex;
         flex-direction: column;
+
+        h1 {
+            font-family: Nunito;
+            color: $primary;
+            font-weight: 800;
+        }
+
+        .delete {
+            position: absolute;
+            right: 1em;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            color: $primary;
+        }
+
+        li {
+            position: relative;
+            &:hover {
+                .delete {
+                    opacity: 1;
+                }
+            }
+        }
     }
 
     .add-song {
