@@ -22,3 +22,4 @@ Route::middleware('auth:api')->put('/playlist/{playlist}', 'PlaylistController@u
 Route::middleware('auth:api')->delete('/playlist/{playlist}', 'PlaylistController@deletePlaylist');
 
 Route::middleware('auth:api')->post('/playlist/{playlist}/song', 'PlaylistController@addSongToPlaylist');
+Route::middleware('auth:api')->delete('/playlist/{playlist}/song/{song}', 'PlaylistController@removeSongFromPlaylist');
