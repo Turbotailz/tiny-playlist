@@ -13,7 +13,7 @@ class CreatePlaylistSongsTable extends Migration
      */
     public function up()
     {
-        Schema::create('playlist_songs', function (Blueprint $table) {
+        Schema::create('playlist_song', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
             $table->integer('playlist_id');
