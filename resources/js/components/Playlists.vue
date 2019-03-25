@@ -12,7 +12,7 @@
                 {{ playlist.name }}
             </div>
             <i v-if="playlist.public" class="fal fa-globe-asia"></i>
-            <div @click="deletePlaylist(playlist)" class="delete">
+            <div @click.stop="deletePlaylist(playlist)" class="delete">
                 <i class="fal fa-times-square"></i>
             </div>
         </router-link>
