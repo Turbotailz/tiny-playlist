@@ -95,7 +95,11 @@ class PlaylistController extends Controller
      */
     public function addSongToPlaylist(Request $request, Playlist $playlist)
     {
-        $existingSong = Song::find($request->mbid);
+        if ($request->mbid != '') {
+            $existingSong = Song::where('mbid', $request->mbid)->first();
+        } else {
+            $existingSong = Song::where('name', $request->name)->where('artist', $request->artist)->first();
+        }
         
         if ($existingSong) {
             $playlist->songs()->attach($existingSong->id);
@@ -105,5 +109,17 @@ class PlaylistController extends Controller
         }
 
         return response()->json($playlist, 201);
+    }
+    
+    /**
+     * Remove a song from a playlist
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function removeSongFromPlaylist(Request $request, Playlist $playlist, Song $song)
+    {
+        $playlist->songs()->detach($song->id);
+
+        return response()->json($playlist, 200);
     }
 }
